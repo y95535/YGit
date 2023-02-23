@@ -18,7 +18,7 @@
     <Grid>
         <StackPanel Orientation="Vertical">
             <TextBlock Margin="10" HorizontalAlignment="Center"><Run Text="YGitTool"/></TextBlock>
-            <Button Content="Click me!" Click="button1_Click" Width="120" Height="80" x:Name="button1"/>
+            <Button Content="Clone" Command="{Binding CloneCmd}" Width="120" Height="80" x:Name="btnClone"/>
         </StackPanel>
     </Grid>
 </UserControl>

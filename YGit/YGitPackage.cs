@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Threading;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
 
 namespace YGit
@@ -28,7 +29,9 @@ namespace YGit
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [ProvideToolWindow(typeof(YGitTool))]
     public sealed class YGitPackage : AsyncPackage
-    {
+    { 
+        public static Logger VSLogger;
+
         /// <summary>
         /// YGitPackage GUID string.
         /// </summary>
@@ -49,6 +52,9 @@ namespace YGit
             // Do any initialization that requires the UI thread after switching to the UI thread.
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
             await YGitToolCommand.InitializeAsync(this);
+            var vsOutput = (IVsOutputWindow)GetService(typeof(SVsOutputWindow));
+            VSLogger = new Logger(vsOutput, "YGit");
+            VSLogger.WriteLine("YGit initialized.");
         }
 
         #endregion
