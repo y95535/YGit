@@ -5,6 +5,8 @@ VisualStudioVersion = 17.5.33414.496
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YGit", "YGit\YGit.csproj", "{0E3CDBC2-165D-4AE1-BDD7-1E351DD36DCE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YGitConsole", "YGitConsole\YGitConsole.csproj", "{3F3E2E20-3DC1-450B-888F-E78CC5D1A076}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,18 @@ Global
 		{0E3CDBC2-165D-4AE1-BDD7-1E351DD36DCE}.Release|arm64.Build.0 = Release|arm64
 		{0E3CDBC2-165D-4AE1-BDD7-1E351DD36DCE}.Release|x86.ActiveCfg = Release|x86
 		{0E3CDBC2-165D-4AE1-BDD7-1E351DD36DCE}.Release|x86.Build.0 = Release|x86
+		{3F3E2E20-3DC1-450B-888F-E78CC5D1A076}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F3E2E20-3DC1-450B-888F-E78CC5D1A076}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F3E2E20-3DC1-450B-888F-E78CC5D1A076}.Debug|arm64.ActiveCfg = Debug|Any CPU
+		{3F3E2E20-3DC1-450B-888F-E78CC5D1A076}.Debug|arm64.Build.0 = Debug|Any CPU
+		{3F3E2E20-3DC1-450B-888F-E78CC5D1A076}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3F3E2E20-3DC1-450B-888F-E78CC5D1A076}.Debug|x86.Build.0 = Debug|Any CPU
+		{3F3E2E20-3DC1-450B-888F-E78CC5D1A076}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F3E2E20-3DC1-450B-888F-E78CC5D1A076}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F3E2E20-3DC1-450B-888F-E78CC5D1A076}.Release|arm64.ActiveCfg = Release|Any CPU
+		{3F3E2E20-3DC1-450B-888F-E78CC5D1A076}.Release|arm64.Build.0 = Release|Any CPU
+		{3F3E2E20-3DC1-450B-888F-E78CC5D1A076}.Release|x86.ActiveCfg = Release|Any CPU
+		{3F3E2E20-3DC1-450B-888F-E78CC5D1A076}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

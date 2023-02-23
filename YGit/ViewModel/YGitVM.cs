@@ -20,7 +20,7 @@ namespace YGit.ViewModel
         public YGitVM() 
         {
             this.CloneCmd = new AsyncRelayCommand(CloneAsync);
-            GlobalSettings.NativeLibraryPath = @"C:\Users\jiede\source\repos\YGit\YGit\bin\Debug\lib\win32\x64\git2-182d0d1.dll"; 
+            GlobalSettings.NativeLibraryPath = @"C:\Users\jiede\source\repos\YGit\YGit\bin\Debug\lib\win32\x64"; 
         }
 
         public ICommand CloneCmd { get; set; }
