@@ -20,7 +20,7 @@ namespace YGit.ViewModel
         public YGitVM() 
         {
             this.CloneCmd = new AsyncRelayCommand(CloneAsync);
-            GlobalSettings.NativeLibraryPath = @"C:\Users\jiede\source\repos\YGit\YGit\bin\Debug\lib\win32\x64"; 
+            //GlobalSettings.NativeLibraryPath = @"C:\Users\jiede\source\repos\YGit\YGit\bin\Debug\lib\win32\x64"; 
         }
 
         public ICommand CloneCmd { get; set; }
@@ -36,9 +36,8 @@ namespace YGit.ViewModel
             });
 
             var cloneOptions = new CloneOptions
-            {
-                BranchName ="main",
-                //OnProgress = progressHandler,
+            { 
+                OnProgress = progressHandler,
                 CredentialsProvider = (url, usernameFromUrl, types) =>
                     new UsernamePasswordCredentials
                     {
@@ -48,7 +47,21 @@ namespace YGit.ViewModel
             };
              
             // Clone the repository
-            var msg = Repository.Clone("https://github.com/JasonDevStudio/YGit.git", @"C:\Users\jiede\Downloads\git", cloneOptions); 
+            var path = Repository.Clone("https://github.com/JasonDevStudio/YGit.git", @"C:\Users\jiede\Downloads\git", cloneOptions);
+            var repo = new Repository(path);
+
+            // Get a reference to the branch you want to switch to
+            var branchName = "origin/develop";
+            var branch = repo.Branches[branchName]; 
+
+            foreach (var item in repo.Branches)
+            {
+                YGitPackage.VSLogger.WriteLine($"{item.RemoteName}, {item.FriendlyName}, {item.CanonicalName}, {item.TrackedBranch}");
+            }
+
+
+            // Switch to the branch
+            Commands.Checkout(repo, branch); 
         }
     }
 }

@@ -95,6 +95,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="git2-106a5f2.dll">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="Resources\YGitToolCommand.png" />
     <VSCTCompile Include="YGitPackage.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
