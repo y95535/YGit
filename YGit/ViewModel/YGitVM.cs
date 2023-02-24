@@ -19,8 +19,10 @@ namespace YGit.ViewModel
     internal class YGitVM : ObservableObject
     {
         private YGitConf gitConf;
-        private IVsOutputWindow output;
         private ProgressHandler progressHandler = new ProgressHandler(msg => YGitPackage.VSLogger.WriteLine(msg));
+        private string cmodule;
+        private string cmsg;
+        private string sourceMergeBranch;
 
         /// <summary>
         /// Gets or sets the git conf.
@@ -31,10 +33,34 @@ namespace YGit.ViewModel
         public YGitConf GitConf { get => this.gitConf; set => this.SetProperty(ref this.gitConf, value); }
 
         /// <summary>
+        /// Gets or sets the c module.
+        /// </summary>
+        /// <value>
+        /// The c module.
+        /// </value>
+        public string CModule { get => this.cmodule; set => this.SetProperty(ref this.cmodule, value); }
+
+        /// <summary>
+        /// Gets or sets the c MSG.
+        /// </summary>
+        /// <value>
+        /// The c MSG.
+        /// </value>
+        public string CMsg { get => this.cmsg; set => this.SetProperty(ref this.cmsg, value); }
+
+        /// <summary>
+        /// Gets or sets the source merge branch.
+        /// </summary>
+        /// <value>
+        /// The source merge branch.
+        /// </value>
+        public string SourceMergeBranch { get => this.sourceMergeBranch; set => this.SetProperty(ref this.sourceMergeBranch, value); }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="YGitVM"/> class.
         /// </summary>
         public YGitVM()
-        { 
+        {
             this.LoadConf();
         }
 
@@ -61,6 +87,22 @@ namespace YGit.ViewModel
         /// The merge command.
         /// </value>
         public ICommand MergeCmd { get; set; }
+
+        /// <summary>
+        /// Gets or sets the push command.
+        /// </summary>
+        /// <value>
+        /// The push command.
+        /// </value>
+        public ICommand PushCmd { get; set; }
+
+        /// <summary>
+        /// Gets or sets the commit command.
+        /// </summary>
+        /// <value>
+        /// The commit command.
+        /// </value>
+        public ICommand CommitCmd => new AsyncRelayCommand(CommitAsync);
 
         /// <summary>
         /// Gets or sets the save conf command.
@@ -106,9 +148,71 @@ namespace YGit.ViewModel
             });
         }
 
+        /// <summary>
+        /// Commits the asynchronous.
+        /// </summary>
+        private async Task CommitAsync()
+        {
+            var message = $"[{this.CModule}] {this.CMsg}";
+
+            await Task.Factory.StartNew(obj =>
+            {
+                var msg = $"{obj}";
+                if (this.GitConf.OneConf != null)
+                    this.CommitModule(this.GitConf.OneConf, msg);
+
+                if (this.GitConf.TwoConf != null)
+                    this.CommitModule(this.GitConf.TwoConf, msg);
+
+                if (this.GitConf.ThirdConf != null)
+                    this.CommitModule(this.GitConf.ThirdConf, msg);
+            }, message);
+        }
+
+        /// <summary>
+        /// Pulls the module.
+        /// </summary>
+        /// <param name="conf">The conf.</param>
         private void PullModule(YGitRepoConf conf)
-        { 
+        {
             this.Initialize(conf);
+            var signature = new Signature(this.GitConf.UserName, this.GitConf.Email, DateTimeOffset.Now);
+            var mergeOpts = new MergeOptions() { };
+            var fetchOpts = new FetchOptions { Prune = true, OnProgress = progressHandler };
+            var pullOpts = new PushOptions { CredentialsProvider = (url, username, password) => new UsernamePasswordCredentials { Username = this.GitConf.UserName, Password = this.GitConf.Password } };
+
+            #region 私仓
+
+            var origin = conf.Repository.Network.Remotes[conf.RemoteName];
+            var orefSpecs = origin.FetchRefSpecs.Select(x => x.Specification);
+            Commands.Fetch(conf.Repository, conf.RemoteName, orefSpecs, null, null);
+            Commands.Pull(conf.Repository, signature, new PullOptions { FetchOptions = fetchOpts });
+
+            #endregion
+
+            #region 团仓
+
+            if (string.IsNullOrWhiteSpace(conf.TeamRemoteName) || string.IsNullOrWhiteSpace(conf.TeamRemoteUrl))
+                return;
+
+            var teamOrigin = conf.Repository.Network.Remotes[conf.TeamRemoteName];
+            var teamBranch = $"{conf.TeamRemoteName}/{this.GitConf.BranchName}";
+            var localBranch = conf.Repository.Branches[this.GitConf.BranchName];
+            Commands.Fetch(conf.Repository, conf.TeamRemoteName, orefSpecs, null, null);
+            var mergeResult = conf.Repository.Merge(teamBranch, signature, mergeOpts);
+
+            if (mergeResult.Status == MergeStatus.Conflicts)
+            {
+                // 提示冲突 
+                YGitPackage.VSLogger.WriteLine($"Merge branch '{conf.TeamRemoteName}/{this.GitConf.BranchName}' into {this.GitConf.BranchName} conflict.");
+            }
+            else
+            {
+                conf.Repository.Commit($"Merge branch '{conf.TeamRemoteName}/{this.GitConf.BranchName}' into {this.GitConf.BranchName} .", signature, signature);
+                conf.Repository.Network.Push(localBranch, pullOpts);
+            }
+
+            #endregion
         }
 
         /// <summary>
@@ -138,6 +242,17 @@ namespace YGit.ViewModel
                 this.SetPushUrl(conf);
                 this.Fetch(conf);
             }
+        }
+
+        /// <summary>
+        /// Commits the module.
+        /// </summary>
+        /// <param name="conf">The conf.</param>
+        /// <param name="msg">The MSG.</param>
+        private void CommitModule(YGitRepoConf conf,string msg)
+        {
+            var signature = new Signature(this.GitConf.UserName, this.GitConf.Email, DateTimeOffset.Now);
+            this.Initialize(conf).Commit(msg, signature, signature);
         }
 
         /// <summary>

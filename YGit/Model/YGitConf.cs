@@ -18,6 +18,7 @@ namespace YGit.Model
     {
         private string userName;
         private string password;
+        private string email;
         private string rootPath;
         private string branchName;
         private YGitRepoConf oneConf;
@@ -31,6 +32,14 @@ namespace YGit.Model
         /// The name of the user.
         /// </value>
         public string UserName { get => userName; set => this.SetProperty(ref this.userName, value); }
+
+        /// <summary>
+        /// Gets or sets the email.
+        /// </summary>
+        /// <value>
+        /// The email.
+        /// </value>
+        public string Email { get => password; set => this.SetProperty(ref this.password, value); }
 
         /// <summary>
         /// Gets or sets the password.
