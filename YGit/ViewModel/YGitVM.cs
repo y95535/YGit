@@ -153,6 +153,12 @@ namespace YGit.ViewModel
         /// </summary>
         private async Task CommitAsync()
         {
+            if (string.IsNullOrWhiteSpace(this.CModule))
+                throw new ArgumentNullException(nameof(this.CModule));
+
+            if (string.IsNullOrWhiteSpace(this.CMsg))
+                throw new ArgumentNullException(nameof(this.CMsg));
+
             var message = $"[{this.CModule}] {this.CMsg}";
 
             await Task.Factory.StartNew(obj =>
@@ -249,7 +255,7 @@ namespace YGit.ViewModel
         /// </summary>
         /// <param name="conf">The conf.</param>
         /// <param name="msg">The MSG.</param>
-        private void CommitModule(YGitRepoConf conf,string msg)
+        private void CommitModule(YGitRepoConf conf, string msg)
         {
             var signature = new Signature(this.GitConf.UserName, this.GitConf.Email, DateTimeOffset.Now);
             this.Initialize(conf).Commit(msg, signature, signature);
