@@ -18,9 +18,10 @@ namespace YGit
             outputWindow.GetPane(ref guid, out outputPane);
         }
 
-        public void WriteLine(string message)
+        public bool WriteLine(string message)
         {
             outputPane.OutputStringThreadSafe(message + Environment.NewLine); 
+            return true;
         }
     }
 }
