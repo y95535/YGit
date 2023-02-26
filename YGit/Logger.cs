@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 namespace YGit
 {
-    public class Logger
+    public class Logger: ILogger
     {
         private readonly IVsOutputWindowPane outputPane;
 

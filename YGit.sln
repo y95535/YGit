@@ -5,7 +5,9 @@ VisualStudioVersion = 17.5.33414.496
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YGit", "YGit\YGit.csproj", "{0E3CDBC2-165D-4AE1-BDD7-1E351DD36DCE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YGitConsole", "YGitConsole\YGitConsole.csproj", "{3F3E2E20-3DC1-450B-888F-E78CC5D1A076}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YGitConsole", "YGitConsole\YGitConsole.csproj", "{3F3E2E20-3DC1-450B-888F-E78CC5D1A076}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "YGit.Shared", "YGit.Shared\YGit.Shared.shproj", "{A852F71D-6F10-475B-AF0B-AD14022673E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,5 +49,9 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7F530FE1-78A3-49AC-A9DE-9C36C52BEF45}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		YGit.Shared\YGit.Shared.projitems*{0e3cdbc2-165d-4ae1-bdd7-1e351dd36dce}*SharedItemsImports = 4
+		YGit.Shared\YGit.Shared.projitems*{a852f71d-6f10-475b-af0b-ad14022673e5}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal
